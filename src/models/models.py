@@ -10,9 +10,17 @@ class ModelsFactory:
 
     @staticmethod
     def get_by_name(model_name, *args, **kwargs):
+        print(f"model name: {model_name}")
         if model_name == 'model1':
             from .model1 import Model1
             model = Model1(*args, **kwargs)
+        elif model_name == 'model2':
+            from .model2 import Model2
+            model = Model2(*args, **kwargs)
+        elif model_name == 'model3':
+            from .model3 import Model3
+            print("model 3 !!!!!")
+            model = Model3(*args, **kwargs)
         else:
             raise ValueError("Model %s not recognized." % model_name)
 

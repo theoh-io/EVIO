@@ -12,6 +12,9 @@ class DatasetFactory:
         if dataset_name == 'cifar10':
             from src.data.cifar10 import Cifar10Dataset
             dataset = Cifar10Dataset(*args, **kwargs)
+        elif dataset_name == 'uzh_fpv':
+            from src.data.uzh_fpv import UZHFPVDataset
+            dataset = UZHFPVDataset(*args, **kwargs)
         else:
             raise ValueError("Dataset [%s] not recognized." % dataset_name)
 

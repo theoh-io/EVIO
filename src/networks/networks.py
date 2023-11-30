@@ -9,12 +9,17 @@ class NetworksFactory:
 
     @staticmethod
     def get_by_name(network_name, *args, **kwargs):
+        print(f"network args {args}, kwargs {kwargs}")
         if network_name == 'resnet18':
             from .resnet18 import ResNet18
             network = ResNet18(*args, **kwargs)
         elif network_name == 'vgg11':
             from .vgg11 import VGG11
             network = VGG11(*args, **kwargs)
+        elif network_name == 'multimodal':
+            from .multimodal import MultiModalNetwork
+            print("multimodal")
+            network = MultiModalNetwork(*args, **kwargs)
         else:
             raise ValueError("Network %s not recognized." % network_name)
 
