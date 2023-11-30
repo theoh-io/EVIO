@@ -1,3 +1,19 @@
+# import sys
+# import os
+
+# # Get the path to the directory containing this script
+# current_script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# # Get the path to the project root (assuming src is one level below the root)
+# project_root = os.path.abspath(os.path.join(current_script_dir, '..'))
+
+# # Add the project root to sys.path if it's not already there
+# if project_root not in sys.path:
+#     sys.path.insert(0, project_root)
+
+import sys
+print(sys.path)
+
 from src.options.config_parser import ConfigParser
 from src.data.custom_dataset_data_loader import CustomDatasetDataLoader
 from src.models.models import ModelsFactory

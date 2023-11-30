@@ -98,7 +98,7 @@ class Cifar10Dataset(DatasetBase):
         self._class_to_idx = {_class: i for i, _class in enumerate(self.classes)}
 
     def _read_valid_ids(self, file_path):
-        ids = np.loadtxt(file_path, dtype=np.str)
+        ids = np.loadtxt(file_path, dtype=str)
         return np.expand_dims(ids, 0) if ids.ndim == 0 else ids
 
     def _download(self):
