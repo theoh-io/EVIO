@@ -60,6 +60,9 @@
       },
       "fusion": {
         "fusion_method": "linear"
+      },
+      "decoder":{
+        "decoding_strat": "simple_fc"
       }
     }
   },

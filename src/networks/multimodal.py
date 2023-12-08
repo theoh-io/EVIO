@@ -4,7 +4,7 @@ import torch.nn as nn
 from torchvision import models
 
 class MultiModalNetwork(NetworkBase):
-    def __init__(self, inputs, input_dims, output_dim, img_encoder=None, ev_encoder=None, imu_encoder=None, fusion_method=None, num_classes=None):
+    def __init__(self, inputs, input_dims, output_dim, img_encoder=None, ev_encoder=None, imu_encoder=None, fusion_method=None, decoding_strat=None, num_classes=None):
         super(MultiModalNetwork, self).__init__()
 
         if "images" in inputs:
@@ -32,7 +32,6 @@ class MultiModalNetwork(NetworkBase):
         if "imu" in inputs:
             # IMU module
             self.imu_dim=input_dims[2]
-            print(f"imu encoder {imu_encoder}")
             if not imu_encoder or imu_encoder=="linear":
                 self.imu_module = nn.Sequential(
                     nn.Linear(self.imu_dim, 64),  # Assuming 'imu' has 7 features
@@ -40,7 +39,7 @@ class MultiModalNetwork(NetworkBase):
                     nn.Linear(64, 64)
                 )
             elif imu_encoder=="wavenet":
-                print("using wavenet !!!!!!!")
+                print("using wavenet")
                 from .wavenet import WaveNetModel
                 self.imu_module =  WaveNetModel(classes= self.imu_dim)
             else:
@@ -51,7 +50,13 @@ class MultiModalNetwork(NetworkBase):
             self.fusion = nn.Linear(num_ftrs_image + 64 + 64, 512)
 
         # Output layer
-        self.output = nn.Linear(512, output_dim)
+        if not decoding_strat:
+            print("here")
+            self.output = nn.Linear(512, output_dim)
+        elif decoding_strat=="simple_fc":
+            print("using simple decoding")
+            from .decoder import SimpleDecoder
+            self.output=SimpleDecoder()
 
     def forward(self, image, events, imu):
         # Image processing

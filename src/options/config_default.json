@@ -78,7 +78,8 @@
         "num_classes": 10
       },
       "encoders": {},
-      "fusion": {}
+      "fusion": {},
+      "decoder":{}
     }
   },
 

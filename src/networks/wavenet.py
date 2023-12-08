@@ -129,7 +129,7 @@ class WaveNetModel(nn.Module):
 
     def wavenet(self, input, dilation_func):
         x = self.start_conv(input)
-        print(f"After start_conv: {x.size()}")  # Track after initial convolution
+        #print(f"After start_conv: {x.size()}")  # Track after initial convolution
 
         skip = 0 # Adjusted initialization
        
@@ -138,22 +138,22 @@ class WaveNetModel(nn.Module):
             (dilation, init_dilation) = self.dilations[i]
 
             residual = dilation_func(x, dilation, init_dilation, i)
-            print(f"After dilation_func (Layer {i}): {residual.size()}")  # Track after dilation
+            #print(f"After dilation_func (Layer {i}): {residual.size()}")  # Track after dilation
 
             filter = self.filter_convs[i](residual)
             filter = F.tanh(filter)
             gate = self.gate_convs[i](residual)
             gate = F.sigmoid(gate)
             x = filter * gate
-            print(f"After gated activations (Layer {i}): {x.size()}")  # Track after gated activations
+            #print(f"After gated activations (Layer {i}): {x.size()}")  # Track after gated activations
 
             s = x
             if x.size(2) != 1:
                 s = dilate(x, 1, init_dilation=dilation)
-                print(f"After dilate (Layer {i}): {s.size()}")  # Track after dilation
+                #print(f"After dilate (Layer {i}): {s.size()}")  # Track after dilation
 
             s = self.skip_convs[i](s)
-            print(f"After skip_convs (Layer {i}): {s.size()}")  # Track after skip convolutions
+            #print(f"After skip_convs (Layer {i}): {s.size()}")  # Track after skip convolutions
             # Align sequence lengths of s and skip before addition
             if skip is not 0:
                 if s.size(2) != skip.size(2):
@@ -164,23 +164,23 @@ class WaveNetModel(nn.Module):
                         s = F.pad(s, (0, max_len - s.size(2)))
                     else:
                         skip = F.pad(skip, (0, max_len - skip.size(2)))
-                    print(f"After padding alignment (Layer {i}) skip: {skip.size()}, s: {s.size()}")
+                    #print(f"After padding alignment (Layer {i}) skip: {skip.size()}, s: {s.size()}")
                 
             skip = s + skip
-            print(f"After skip addition (Layer {i}): {skip.size()}")  # Track after skip addition
+            #print(f"After skip addition (Layer {i}): {skip.size()}")  # Track after skip addition
 
             x = self.residual_convs[i](x)
             x = x + residual[:, :, (self.kernel_size - 1):]
-            print(f"After residual convs (Layer {i}): {x.size()}")  # Track after residual convolutions
+            #print(f"After residual convs (Layer {i}): {x.size()}")  # Track after residual convolutions
 
         x = F.relu(skip)
-        print(f"After ReLU on skip: {x.size()}")  # Track after ReLU on skip
+        #print(f"After ReLU on skip: {x.size()}")  # Track after ReLU on skip
 
         x = F.relu(self.end_conv_1(x))
-        print(f"After end_conv_1: {x.size()}")  # Track after end_conv_1
+        #print(f"After end_conv_1: {x.size()}")  # Track after end_conv_1
 
         x = self.end_conv_2(x)
-        print(f"After end_conv_2: {x.size()}")  # Track after end_conv_2
+        #print(f"After end_conv_2: {x.size()}")  # Track after end_conv_2
 
         return x
 

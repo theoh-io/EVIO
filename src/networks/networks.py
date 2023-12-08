@@ -19,6 +19,7 @@ class NetworksFactory:
         elif network_name == 'multimodal':
             from .multimodal import MultiModalNetwork
             print("multimodal")
+            print(f"kwargs {kwargs}")
             network = MultiModalNetwork(*args, **kwargs)
         else:
             raise ValueError("Network %s not recognized." % network_name)
