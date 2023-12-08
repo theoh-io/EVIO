@@ -31,6 +31,9 @@ T=config["dataset"]["target_nc"]
 
 # create network
 model_type=config["model"]["type"]
+
+print("in test print config")
+print(config["networks"]["reg"])
 #nn_type = config["networks"]["reg"]["type"]
 #nn_hyper_params = config["networks"]["reg"]["hyper_params"]
 model= ModelsFactory.get_by_name(model_type, config)
