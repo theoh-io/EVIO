@@ -47,9 +47,10 @@ class Model3(BaseModel):
         reg_hyper_params = self._opt["networks"]["reg"]["hyper_params"]
         reg_encoders= self._opt["networks"]["reg"]["encoders"]
         reg_fusion= self._opt["networks"]["reg"]["fusion"]
+        reg_decoder= self._opt["networks"]["reg"]["decoder"]
         print(f"enc reg {reg_encoders}")
 
-        self._reg = NetworksFactory.get_by_name(reg_type, **reg_hyper_params, **reg_encoders, **reg_fusion)
+        self._reg = NetworksFactory.get_by_name(reg_type, **reg_hyper_params, **reg_encoders, **reg_fusion, **reg_decoder)
         self._reg = torch.nn.DataParallel(self._reg, device_ids=self._reg_gpus_ids)
 
     def _init_train_vars(self):

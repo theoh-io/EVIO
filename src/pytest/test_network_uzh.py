@@ -20,7 +20,7 @@ print(f"number of modalities {n_modalities}")
 B = config["dataset"]["batch_size"]
 S1, S2 = config["dataset"]["image_size"]
 T= config["dataset"]["target_nc"]
-n_img = config["dataset"]["img_nc"]
+NC_img = config["dataset"]["img_nc"]
 
 #other Modalities
 E=config["dataset"]["event_dim"]
@@ -41,10 +41,11 @@ model= ModelsFactory.get_by_name(model_type, config)
 
 nn=model._reg
 # forward pass
-img = torch.ones([B, n_img, S1, S2])
+img = torch.ones([B, NC_img, S1, S2])
 ev=torch.ones([B,E])
 imu=torch.ones([B,I])
 #imu=torch.ones([B,I,10])
+
 y=nn(img, ev, imu)
 #nn.print()
 print(f"result vs expected target: {y.shape}, {B, T}")

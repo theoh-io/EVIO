@@ -2,6 +2,8 @@ import numpy as np
 from tqdm import tqdm
 import pandas as pd
 
+# Basic Test just to read the event file with memory constraints
+
 def read_large_file_pandas(filename, chunk):
     df = pd.concat([chunk for chunk in tqdm(pd.read_csv(filename, chunksize=chunk), desc='Loading data')])
     return df

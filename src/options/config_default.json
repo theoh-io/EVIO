@@ -15,12 +15,13 @@
   "uzh_fpv": {
     "data_dir": "datasets/uzh_fpv",
     "data_folder": "Tracks",
-    "inputs": ["images", "events", "imu"],
-    "imu": ["timestamp", "ang_vel_x", "ang_vel_y",
+    "inputs":{
+      "modalities": ["images", "events", "imu"],
+      "imu": ["timestamp", "ang_vel_x", "ang_vel_y",
            "ang_vel_z", "lin_acc_x", "lin_acc_y", "lin_acc_z", "qw"],
-    "events": ["timestamp", "x", "y", "polarity"],
-    "images": ["timestamp", "image_name"],
-    "image_size": [346, 260],
+      "events": ["timestamp", "x", "y", "polarity"],
+      "images": ["timestamp", "image_name"]
+    },
     "output": "groundtruth",
     "train_ids_file": "train_ids.txt",
     "val_ids_file": "val_ids.txt",

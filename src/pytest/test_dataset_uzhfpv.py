@@ -4,36 +4,52 @@ from src.data.custom_dataset_data_loader import CustomDatasetDataLoader
 from src.utils import util
 from collections import OrderedDict
 
-class TestUZHFPVDataset(unittest.TestCase):
+import random
+import numpy as np
+
+# Test to create the dataloader for UZH
+
+class TestDataLoader(unittest.TestCase):
     def setUp(self):
         print("setup")
         self.config = ConfigParser().get_config()
-        self.data_loader = CustomDatasetDataLoader(self.config, is_for="train")
-        self.dataset = self.data_loader.load_data()
+        self.dataloader = CustomDatasetDataLoader(self.config, is_for="train")
+        self.dataloader = self.dataloader.load_data()
         # print dimensions of input and target
-        self.dataset_size = len(self.dataset)
-        print('#training images = %d' % self.dataset_size)
+        self.data_size = len(self.dataloader)
+        print('#training images = %d' % self.data_size)
 
+    def inspectSample(self):
+        #generate a random number to pick a test sample
+        rand_num=np.random.randn()
+        print(rand_num)
+        #visualize some images
+        sample_img=self.dataloader._images[rand_num]
+        print(f"sample img: {sample_img.size()}")
+        #print imus between 2 frames
+        sample_imu= self.data_loader._imu[rand_num:(rand_num+10)]
 
-    # def test_dataset_loading(self):
-    #     input=[]
-    #     for i, data in enumerate(self.dataset):
-    #         for i in self.config['uzh_fpv']['inputs']:
-    #             input.extend(data[i])
-    #         #create a ne
-    #         target = data['target']
-
-    #         self.assertIsNotNone(input)
-    #         self.assertIsNotNone(target)
-
-    #         # self.assertEqual(img.shape[0], self.config['batch_size'])
-    #         # self.assertEqual(target.shape[0], self.config['batch_size'])
-
-    #         break
+        #print ensemble of events betwee 2 frames
+        
+    def inspectBatch(self):
+        for batch, labels in self.dataloader:
+            print(f"input sample: {batch.keys()}")
+            print(f"image shape {batch['img'].size()}")
+            print(f"labels shape {labels.size()}")
 
 if __name__ == '__main__':
     
-    #config = ConfigParser().get_config()
-    test_uzhfpv = TestUZHFPVDataset()
+    test_uzhfpv = TestDataLoader()
     test_uzhfpv.setUp()
-    #test_uzhfpv.test_dataset_loading()
+    seed=random.seed(42)
+    #Accessing directly the sample within dataset
+    #test_uzhfpv.inspectSample()
+    #Accessing a Batch via DataLoader
+    test_uzhfpv.inspectBatch()
+
+    
+
+    
+
+    
+
